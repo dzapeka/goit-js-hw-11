@@ -24,7 +24,7 @@ img {
 .container {
   min-width: 320px;
   max-width: 428px;
-  margin: 80px auto 0;
+  margin: 80px auto 32px;
   padding: 0 16px;
 }
 
