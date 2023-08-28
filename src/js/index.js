@@ -65,8 +65,8 @@ const createGallery = images => {
       }) =>
         `
           <div class="photo-card">
-          <a class="link" href="${largeImageURL}">
-              <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+          <a class="link gallery-item" href="${largeImageURL}">
+              <img src="${webformatURL}" alt="${tags}" width="330" height="220" loading="lazy" />
             <div class="info">
               <p class="info-item">
                 <b>Likes</b>

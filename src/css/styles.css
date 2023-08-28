@@ -25,7 +25,7 @@ img {
   min-width: 320px;
   max-width: 428px;
   margin: 80px auto 0;
-  /* padding: 0 16px; */
+  padding: 0 16px;
 }
 
 @media screen and (min-width: 428px) {
@@ -79,6 +79,7 @@ img {
 }
 
 .search-btn {
+  cursor: pointer;
   position: absolute;
   top: 0;
   right: 0;
@@ -91,7 +92,7 @@ img {
   border: none;
   height: 32px;
   width: 48px;
-  background-color: f0f0f0;
+  background: #f0f0f0;
 }
 
 .search-icon {
@@ -100,16 +101,27 @@ img {
   fill: #444444;
 }
 
+.search-btn:hover,
+.search-btn:focus {
+  background-color: #d6d6d6;
+}
+
+.search-btn:hover .search-icon,
+.search-btn:focus .search-icon {
+  fill: #3f57b3;
+}
+
 /* ----- /Header ----- */
 
 .gallery {
   display: flex;
   flex-wrap: wrap;
-  /* justify-content: center; */
   gap: 16px;
 }
 
 .photo-card {
+  position: relative;
+  padding-bottom: 70px;
   width: 300px;
   border-radius: 0px 0px 4px 4px;
   box-shadow: 0px 1px 6px rgba(46, 47, 66, 0.08),
@@ -139,10 +151,36 @@ img {
 .info {
   display: flex;
   justify-content: space-evenly;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }
 
 .info-item {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.load-more-btn {
+  cursor: pointer;
+  display: block;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: white;
+  background: #3f57b3;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+  border-radius: 5px;
+  border: none;
+  padding: 12px 32px;
+  margin: 0 auto;
+}
+
+.load-more-btn:hover,
+.load-more-btn:focus {
+  background: #1836af;
 }
