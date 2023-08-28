@@ -7,6 +7,14 @@ const searchForm = document.querySelector('#search-form');
 const gallery = document.querySelector('.gallery');
 const loadMoreBtn = document.querySelector('.load-more-btn');
 
+const imagesPerPage = 40;
+
+const loadingErrorMsg = 'Oops! Something went wrong! Try reloading the page!';
+const imagesNotFoundMsg =
+  'Sorry, there are no images matching your search query. Please try again.';
+const endOfResultsMsg =
+  "We're sorry, but you've reached the end of search results.";
+
 let searchQuery = '';
 let currentPage = 1;
 let currentHits = 0;
@@ -21,9 +29,14 @@ const clearGallery = () => {
   loadMoreBtn.classList.add('visually-hidden');
 };
 
+const renderGallery = markup => {
+  gallery.insertAdjacentHTML('beforeend', markup);
+  lightbox.refresh();
+};
+
 const updateLoadMoreBtnVisibility = (hits, totalHits) => {
   if (hits >= totalHits) {
-    Notify.info("We're sorry, but you've reached the end of search results.");
+    Notify.info(endOfResultsMsg);
     loadMoreBtn.classList.add('visually-hidden');
   } else {
     loadMoreBtn.classList.remove('visually-hidden');
@@ -35,32 +48,28 @@ const searchImagesHandler = async event => {
   const form = event.currentTarget;
   searchQuery = form.elements.searchQuery.value.trim();
 
-  // console.log(`Search query: ${searchQuery}`);
-
   clearGallery();
 
   if (!searchQuery) return;
 
   currentPage = 1;
 
-  // console.log(`Current page: ${currentPage}`);
+  try {
+    const searchResults = await fetchImages(searchQuery, currentPage);
+    currentHits = searchResults.hits.length;
 
-  const searchResults = await fetchImages(searchQuery, currentPage);
-  currentHits = searchResults.hits.length;
-
-  if (searchResults.total === 0) {
-    Notify.failure(
-      'Sorry, there are no images matching your search query. Please try again.'
-    );
-  } else {
-    Notify.success(`Hooray! We found ${searchResults.totalHits} images.`);
-    gallery.innerHTML = getGalleryMarkup(searchResults.hits);
-    lightbox.refresh();
-
-    updateLoadMoreBtnVisibility(currentHits, searchResults.totalHits);
+    if (searchResults.total === 0) {
+      Notify.failure(imagesNotFoundMsg);
+    } else {
+      Notify.success(`Hooray! We found ${searchResults.totalHits} images.`);
+      renderGallery(getGalleryMarkup(searchResults.hits));
+      if (searchResults.totalHits > imagesPerPage) {
+        updateLoadMoreBtnVisibility(currentHits, searchResults.totalHits);
+      }
+    }
+  } catch (error) {
+    Notify.failure(loadingErrorMsg);
   }
-
-  // console.log(searchResults);
 };
 
 const getGalleryMarkup = images => {
@@ -106,16 +115,28 @@ const getGalleryMarkup = images => {
 
 const loadMoreImagesHandler = async () => {
   currentPage += 1;
-  const searchResults = await fetchImages(searchQuery, currentPage);
-  gallery.insertAdjacentHTML('beforeend', getGalleryMarkup(searchResults.hits));
-  lightbox.refresh();
+  try {
+    const searchResults = await fetchImages(searchQuery, currentPage);
 
-  currentHits += searchResults.hits.length;
-  // console.log(`Current page: ${currentPage}`);
-  // console.log(`Current hits: ${currentHits}`);
-  // console.log(searchResults);
+    renderGallery(getGalleryMarkup(searchResults.hits));
+    scrollToNextGalleryPage();
 
-  updateLoadMoreBtnVisibility(currentHits, searchResults.totalHits);
+    currentHits += searchResults.hits.length;
+    updateLoadMoreBtnVisibility(currentHits, searchResults.totalHits);
+  } catch (error) {
+    Notify.failure(loadingErrorMsg);
+  }
+};
+
+const scrollToNextGalleryPage = () => {
+  const { height: cardHeight } = document
+    .querySelector('.gallery')
+    .firstElementChild.getBoundingClientRect();
+
+  window.scrollBy({
+    top: cardHeight * 2,
+    behavior: 'smooth',
+  });
 };
 
 searchForm.addEventListener('submit', searchImagesHandler);
