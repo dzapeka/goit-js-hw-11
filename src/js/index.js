@@ -78,7 +78,7 @@ const getGalleryMarkup = images => {
         `
           <div class="photo-card">
           <a class="link gallery-item" href="${largeImageURL}">
-              <img src="${webformatURL}" alt="${tags}" width="330" height="220" loading="lazy" />
+              <img class="gallery-image" src="${webformatURL}" alt="${tags}" width="330" height="220" loading="lazy" />
             <div class="info">
               <p class="info-item">
                 <b>Likes</b>
