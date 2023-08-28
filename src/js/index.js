@@ -10,6 +10,11 @@ const loadMoreBtn = document.querySelector('.load-more-btn');
 let previousSearchQuery = '';
 let currentPage = 0;
 
+let lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
+
 const searchImagesHandler = async event => {
   event.preventDefault();
   const form = event.currentTarget;
@@ -33,6 +38,7 @@ const searchImagesHandler = async event => {
   } else {
     Notify.success(`Hooray! We found ${searchResults.totalHits} images.`);
     createGallery(searchResults.hits);
+    lightbox.refresh();
     if (searchResults.totalHits > 40) {
       loadMoreBtn.classList.remove('visually-hidden');
     } else {
@@ -88,8 +94,3 @@ const createGallery = images => {
 };
 
 searchForm.addEventListener('submit', searchImagesHandler);
-
-let lightbox = new SimpleLightbox('.gallery img', {
-  captionsData: 'alt',
-  captionDelay: 250,
-});
