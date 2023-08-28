@@ -1,0 +1,148 @@
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.container {
+  min-width: 320px;
+  max-width: 428px;
+  margin: 80px auto 0;
+  /* padding: 0 16px; */
+}
+
+@media screen and (min-width: 428px) {
+  .container {
+    max-width: 428px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .container {
+    max-width: 1440px;
+    padding: 0 15px;
+  }
+}
+
+/* ----- Header ----- */
+.search-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 0px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #3f57b3;
+  box-shadow: 0px 1px 6px rgba(46, 47, 66, 0.08),
+    0px 1px 1px rgba(46, 47, 66, 0.16), 0px 2px 1px rgba(46, 47, 66, 0.08);
+}
+
+.search-form-wrapper {
+  position: relative;
+}
+
+.search-form-input {
+  width: 300px;
+  height: 32px;
+  padding-left: 10px;
+  padding-right: 58px;
+  outline: none;
+  border-radius: 5px;
+  border: none;
+}
+
+.search-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+
+  border: none;
+  height: 32px;
+  width: 48px;
+  background-color: f0f0f0;
+}
+
+.search-icon {
+  width: 16px;
+  height: 16px;
+  fill: #444444;
+}
+
+/* ----- /Header ----- */
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  /* justify-content: center; */
+  gap: 16px;
+}
+
+.photo-card {
+  width: 300px;
+  border-radius: 0px 0px 4px 4px;
+  box-shadow: 0px 1px 6px rgba(46, 47, 66, 0.08),
+    0px 1px 1px rgba(46, 47, 66, 0.16), 0px 2px 1px rgba(46, 47, 66, 0.08);
+}
+
+@media screen and (min-width: 768px) {
+  .search-form-input {
+    width: 420px;
+  }
+
+  .gallery {
+    column-gap: 24px;
+  }
+
+  .photo-card {
+    width: calc((100% - 24px) / 2);
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .photo-card {
+    width: calc((100% - 72px) / 4);
+  }
+}
+
+.info {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
