@@ -24,7 +24,7 @@ img {
 .container {
   min-width: 320px;
   max-width: 428px;
-  margin: 80px auto 32px;
+  margin: 80px auto 0;
   padding: 0 16px;
 }
 
@@ -178,7 +178,7 @@ img {
   border-radius: 5px;
   border: none;
   padding: 12px 32px;
-  margin: 0 auto;
+  margin: 32px auto;
 }
 
 .load-more-btn:hover,
