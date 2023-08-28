@@ -7,8 +7,9 @@ const searchForm = document.querySelector('#search-form');
 const gallery = document.querySelector('.gallery');
 const loadMoreBtn = document.querySelector('.load-more-btn');
 
-let previousSearchQuery = '';
-let currentPage = 0;
+let searchQuery = '';
+let currentPage = 1;
+let currentHits = 0;
 
 let lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
@@ -18,16 +19,16 @@ let lightbox = new SimpleLightbox('.gallery a', {
 const searchImagesHandler = async event => {
   event.preventDefault();
   const form = event.currentTarget;
-  const searchQuery = form.elements.searchQuery.value;
+  searchQuery = form.elements.searchQuery.value.trim();
 
-  if (searchQuery === previousSearchQuery) {
-    currentPage += 1;
-  } else {
-    previousSearchQuery = searchQuery;
-    currentPage = 1;
-  }
+  console.log(`Search query: ${searchQuery}`);
 
-  // console.log(`Search query: ${searchQuery}`);
+  clearGallery();
+
+  if (!searchQuery) return;
+
+  currentPage = 1;
+
   console.log(`Current page: ${currentPage}`);
 
   const searchResults = await fetchImages(searchQuery, currentPage);
@@ -37,10 +38,12 @@ const searchImagesHandler = async event => {
     );
   } else {
     Notify.success(`Hooray! We found ${searchResults.totalHits} images.`);
-    createGallery(searchResults.hits);
+    gallery.innerHTML = getGalleryMarkup(searchResults.hits);
     lightbox.refresh();
+
     if (searchResults.totalHits > 40) {
       loadMoreBtn.classList.remove('visually-hidden');
+      currentHits = searchResults.hits.length;
     } else {
       loadMoreBtn.classList.add('visually-hidden');
     }
@@ -49,10 +52,8 @@ const searchImagesHandler = async event => {
   console.log(searchResults);
 };
 
-const loadMoreImagesHandler = async () => {};
-
-const createGallery = images => {
-  const galleryMarkup = images
+const getGalleryMarkup = images => {
+  return images
     .map(
       ({
         webformatURL,
@@ -90,7 +91,27 @@ const createGallery = images => {
         `
     )
     .join('');
-  gallery.innerHTML = galleryMarkup;
+};
+
+const loadMoreImagesHandler = async () => {
+  currentPage += 1;
+  const searchResults = await fetchImages(searchQuery, currentPage);
+  gallery.insertAdjacentHTML('beforeend', getGalleryMarkup(searchResults.hits));
+
+  currentHits += searchResults.hits.length;
+  console.log(`Current page: ${currentPage}`);
+  console.log(`Current hits: ${currentHits}`);
+  console.log(searchResults);
+  if (currentHits >= searchResults.totalHits) {
+    Notify.info("We're sorry, but you've reached the end of search results.");
+    loadMoreBtn.classList.add('visually-hidden');
+  }
+};
+
+const clearGallery = () => {
+  gallery.innerHTML = '';
+  loadMoreBtn.classList.add('visually-hidden');
 };
 
 searchForm.addEventListener('submit', searchImagesHandler);
+loadMoreBtn.addEventListener('click', loadMoreImagesHandler);

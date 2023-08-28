@@ -103,12 +103,12 @@ img {
 }
 
 .search-btn:hover,
-.search-btn:focus {
+.search-btn:active {
   background-color: #d6d6d6;
 }
 
 .search-btn:hover .search-icon,
-.search-btn:focus .search-icon {
+.search-btn:active .search-icon {
   fill: #3f57b3;
 }
 
@@ -182,6 +182,6 @@ img {
 }
 
 .load-more-btn:hover,
-.load-more-btn:focus {
+.load-more-btn:active {
   background: #1836af;
 }
